@@ -2,6 +2,8 @@ const toDoFrom = document.getElementById("todo-form");
 const toDoInput = toDoFrom.querySelector("input");
 const toDoList = document.getElementById("todo-list");
 
+// localStorage에서 사용자 이름 가져오기
+
 let toDos = [];
 const TODOS_KEY = "todos";
 
@@ -18,14 +20,27 @@ function deleteToDo(event) { //x 버튼의 클릭 이벤트의 정보
 
 function paintToDo(newToDo) {
     const li = document.createElement("li");
-    li.id = newToDo.id
+    li.id = newToDo.id;
+
     const span = document.createElement("span");
     span.innerText = newToDo.text;
+
     const button = document.createElement("button");
     button.innerText = "X";
-    button.addEventListener("click", deleteToDo)
+    button.addEventListener("click", deleteToDo); // X 버튼에 deleteToDo 함수 연결
+
+    const compButton = document.createElement("button"); // 체크 버튼 추가
+    compButton.innerText = "✔️";
+    compButton.addEventListener("click", toDoComplete); // 체크 버튼에 toDoComplete 함수 연결
+
+    // 'comp'가 true일 경우, 'completed' 클래스 추가
+    if (newToDo.comp) {
+        li.classList.add("completed"); // 완료된 투두에는 'completed' 클래스 추가
+    }
+
     li.appendChild(span);
     li.appendChild(button);
+    li.appendChild(compButton); // 체크 버튼을 li에 추가
     toDoList.appendChild(li);
 }
 
@@ -36,10 +51,28 @@ function handleToDoSubmit(event) {
     const newToDoObj = {
         text: newToDo,
         id: Date.now(),
+        comp : false,
     };
     toDos.push(newToDoObj);
     paintToDo(newToDoObj);
     saveToDos();
+}
+
+function toDoComplete(event) {
+    const whichLi = event.target.parentElement; // 체크된 li 요소 찾기
+    const toDoId = parseInt(whichLi.id); // 해당 li의 ID를 숫자로 변환
+
+    // 'completed' 클래스 토글
+    whichLi.classList.toggle("completed");
+
+    // toDos 배열에서 해당 toDo를 찾아 'comp' 상태 반영
+    toDos = toDos.map((toDo) =>
+        toDo.id === toDoId
+            ? { ...toDo, comp: !toDo.comp } // comp 상태 반전
+            : toDo
+    );
+
+    saveToDos(); // 변경 사항을 로컬 스토리지에 저장
 }
 
 toDoFrom.addEventListener("submit", handleToDoSubmit);
@@ -54,4 +87,3 @@ if (savedToDos !== null){
     toDos =  parseToDos; //로컬 스토리지 저장 시(= 저장된 todo가 있을 시) 리스트에 to do 업데이트 => 새로고침해도 안날아감
     parseToDos.forEach(paintToDo);
 }
-
