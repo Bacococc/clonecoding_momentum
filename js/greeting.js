@@ -13,7 +13,7 @@ function onLoginSubmit(event) {
     localStorage.setItem(USERNAME_KEY, userName)
     console.log(loginForm)
     greeting.classList.remove(HIDDEN_CLASSNAME)
-    paintGreetings(USERNAME_KEY);
+    paintGreetings(userName)
 }
 
 function paintGreetings(userName) {
