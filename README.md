@@ -1,4 +1,4 @@
-# 📌 Momentum Clone
+## 📌 Momentum Clone
 
 Momentum 클론 코딩 프로젝트
 
@@ -15,11 +15,11 @@ Momentum 클론 코딩 프로젝트
 
 
 
-# ⚒️ Tool
+## ⚒️ Tool
 JavaScript, HTML5, CSS3
 
 
-# 📂 폴더 구조
+## 📂 폴더 구조
 
 ```
 momentum_clone/
